@@ -1,0 +1,54 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: gardenme_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-gardenme}
+    ports:
+      - "${DB_PORT:-5434}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-gardenme}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Express TypeScript Backend
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: gardenme_server
+    restart: always
+    ports:
+      - "${SERVER_PORT:-6001}:5000"
+    environment:
+      PORT: 5000
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-gardenme}?schema=public"
+      JWT_SECRET: ${JWT_SECRET:-gardenme_jwt_secret_dev_key_2026_super_secure}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY:-}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY:-}
+      VAPID_SUBJECT: ${VAPID_SUBJECT:-mailto:admin@gardenme.app}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # React PWA Frontend (Nginx Proxy)
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gardenme_client
+    restart: always
+    ports:
+      - "${CLIENT_PORT:-6060}:80"
+    depends_on:
+      - server
+
+volumes:
+  postgres_data:

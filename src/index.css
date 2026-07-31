@@ -1,0 +1,383 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   GARDENME — "ECO-TECH" DESIGN SYSTEM
+   Bridges raw nature and precision agriculture tech: soft cream surfaces,
+   rounded tactile geometry, forest-green as the acting color, with
+   sprout/amber/ember/sky as status accents. Inter carries both plant
+   identity and UI; JetBrains Mono carries telemetry labels and sensor IDs.
+   (--copper/--sprout/--amber/--ember/--sky names are historical — they are
+   now the eco-tech accent/status colors, not literal copper/plant tones.)
+   ========================================================================== */
+:root {
+  --bg: #f9faf2;
+  --surface-low: #f3f4ed;
+  --surface: #ffffff;
+  --surface-high: #edefe7;
+  --border: #e2e3dc;
+  --border-strong: #c2c9bb;
+
+  --ink: #191c18;
+  --ink-muted: #42493e;
+  --ink-faint: #72796e;
+
+  --copper: #154212;
+  --copper-strong: #2d5a27;
+  --sprout: #2d5a27;
+  --amber: #a15c00;
+  --ember: #ba1a1a;
+  --sky: #1e6fa8;
+
+  --shadow-color: 120 45% 14%;
+
+  --font-display: 'Inter', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface-low: var(--surface-low);
+  --color-surface: var(--surface);
+  --color-surface-high: var(--surface-high);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-copper: var(--copper);
+  --color-copper-strong: var(--copper-strong);
+  --color-sprout: var(--sprout);
+  --color-amber: var(--amber);
+  --color-ember: var(--ember);
+  --color-sky: var(--sky);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.font-mono-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--copper);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Cards & panels */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px hsl(var(--shadow-color) / 4%);
+}
+
+.panel-well {
+  background: var(--surface-low);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* Telemetry micro-labels: SNAKE_CASE like real sensor field names */
+.telemetry-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* Primary action: a hardware button, not a pill */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 12px;
+  padding: 12px 18px;
+  transition: transform 120ms ease, filter 150ms ease, background-color 150ms ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn-copper {
+  background: var(--copper);
+  color: #ffffff;
+  box-shadow: 0 2px 8px hsl(var(--shadow-color) / 18%);
+}
+
+.btn-copper:hover {
+  filter: brightness(1.15);
+}
+
+.btn-ghost {
+  background: var(--surface-high);
+  color: var(--ink);
+  border: 1px solid var(--border-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--copper);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--ember);
+  border: 1px solid color-mix(in srgb, var(--ember) 45%, transparent);
+}
+
+.btn-danger:hover {
+  background: color-mix(in srgb, var(--ember) 12%, transparent);
+}
+
+.field {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: var(--surface-low);
+  border: 1px solid var(--border-strong);
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.field::placeholder {
+  color: var(--ink-faint);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--copper);
+  box-shadow: 0 0 0 2px hsl(var(--shadow-color) / 12%);
+}
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-bottom: 6px;
+}
+
+/* Status LED dot, used for connection + moisture state */
+.led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.led.live::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  animation: led-pulse 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes led-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+/* Needle settle on the moisture dial */
+@keyframes needle-settle {
+  0% {
+    transform: rotate(var(--needle-from, -90deg));
+  }
+  60% {
+    transform: rotate(calc(var(--needle-to, 0deg) + 4deg));
+  }
+  100% {
+    transform: rotate(var(--needle-to, 0deg));
+  }
+}
+
+.needle-animate {
+  animation: needle-settle 900ms cubic-bezier(0.2, 0.9, 0.25, 1) forwards;
+}
+
+/* Bottom sheet */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 12, 9, 0.72);
+  backdrop-filter: blur(3px);
+  z-index: 50;
+  animation: fade-in 180ms ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.sheet-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 51;
+  max-height: min(88dvh, 720px);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 24px 24px 0 0;
+  padding: 10px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -12px 32px hsl(var(--shadow-color) / 14%);
+  animation: sheet-up 260ms cubic-bezier(0.2, 0.85, 0.25, 1) both;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--ink-faint);
+  opacity: 0.4;
+  margin: 0 auto 14px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .led.live::after,
+  .needle-animate,
+  .sheet-backdrop,
+  .sheet-panel {
+    animation: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+/* Range slider, restyled to match the panel-well it sits in */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--copper);
+  border: 3px solid var(--surface-low);
+  box-shadow: 0 0 0 1px var(--border-strong);
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--copper);
+  border: 3px solid var(--surface-low);
+  box-shadow: 0 0 0 1px var(--border-strong);
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
