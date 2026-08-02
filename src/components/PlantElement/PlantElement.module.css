@@ -1,0 +1,57 @@
+.plant {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+
+  background: var(--md-sys-color-surface-container-lowest);
+
+  border-radius: 15px;
+  border: 1px solid var(--md-sys-color-surface-container);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  padding: 25px;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .plantInfo {
+    display: flex;
+    flex-direction: column;
+
+    .plantReview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      span {
+        font-size: 20px;
+      }
+    }
+
+    .plantName {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .battery {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      p {
+        font-size: 14px;
+      }
+
+      span {
+        font-variation-settings: "wght" 300;
+      }
+    }
+  }
+
+  .nextWater {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+}

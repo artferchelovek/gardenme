@@ -1,9 +1,10 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { DeviceService } from '../services/device.service.js';
+import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+
+import { DeviceService } from "../services/device.service.js";
 
 const createDeviceSchema = z.object({
-  name: z.string().min(1, 'Название устройства обязательно'),
+  name: z.string().min(1, "Название устройства обязательно"),
   macAddress: z.string().optional(),
   token: z.string().optional(),
 });
@@ -36,7 +37,11 @@ export class DeviceController {
     try {
       const id = req.params.id as string;
       const { plantId } = pairDeviceSchema.parse(req.body);
-      const device = await DeviceService.pairWithPlant(req.userId!, id, plantId);
+      const device = await DeviceService.pairWithPlant(
+        req.userId!,
+        id,
+        plantId,
+      );
       res.json(device);
     } catch (err) {
       next(err);
@@ -47,7 +52,7 @@ export class DeviceController {
     try {
       const id = req.params.id as string;
       await DeviceService.deleteDevice(req.userId!, id);
-      res.json({ message: 'Устройство удалено' });
+      res.json({ message: "Устройство удалено" });
     } catch (err) {
       next(err);
     }

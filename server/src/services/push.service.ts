@@ -1,12 +1,13 @@
-import webPush from 'web-push';
-import { prisma } from '../config/prisma.js';
-import { env } from '../config/env.js';
+import webPush from "web-push";
+
+import { env } from "../config/env.js";
+import { prisma } from "../config/prisma.js";
 
 if (env.VAPID_PUBLIC_KEY && env.VAPID_PRIVATE_KEY) {
   webPush.setVapidDetails(
     env.VAPID_SUBJECT,
     env.VAPID_PUBLIC_KEY,
-    env.VAPID_PRIVATE_KEY
+    env.VAPID_PRIVATE_KEY,
   );
 }
 
@@ -14,7 +15,10 @@ export class PushService {
   /**
    * Save or update a PushSubscription for a user.
    */
-  static async subscribe(userId: string, subscription: { endpoint: string; keys: { p256dh: string; auth: string } }) {
+  static async subscribe(
+    userId: string,
+    subscription: { endpoint: string; keys: { p256dh: string; auth: string } },
+  ) {
     return prisma.pushSubscription.upsert({
       where: { endpoint: subscription.endpoint },
       update: {
@@ -43,9 +47,14 @@ export class PushService {
   /**
    * Send notification to all subscriptions of a specific user.
    */
-  static async sendNotificationToUser(userId: string, payload: { title: string; body: string; data?: any }) {
+  static async sendNotificationToUser(
+    userId: string,
+    payload: { title: string; body: string; data?: any },
+  ) {
     if (!env.VAPID_PUBLIC_KEY || !env.VAPID_PRIVATE_KEY) {
-      console.warn('[PushService] VAPID keys not configured, skipping push notification');
+      console.warn(
+        "[PushService] VAPID keys not configured, skipping push notification",
+      );
       return;
     }
 
@@ -69,9 +78,11 @@ export class PushService {
       } catch (err: any) {
         if (err.statusCode === 410 || err.statusCode === 404) {
           // Subscription expired or invalid - remove from DB
-          await prisma.pushSubscription.delete({ where: { id: sub.id } }).catch(() => {});
+          await prisma.pushSubscription
+            .delete({ where: { id: sub.id } })
+            .catch(() => {});
         } else {
-          console.error('[PushService] Error sending push notification:', err);
+          console.error("[PushService] Error sending push notification:", err);
         }
       }
     });

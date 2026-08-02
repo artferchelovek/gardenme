@@ -4,6 +4,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator frontendClient {
+  provider = "prisma-client-js"
+  output   = "../../src/types/prisma"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -102,11 +107,11 @@ model PushSubscription {
 }
 
 model NotificationLog {
-  id        String   @id @default(uuid())
-  plantId   String
-  plant     Plant    @relation(fields: [plantId], references: [id], onDelete: Cascade)
-  type      String
-  sentAt    DateTime @default(now())
+  id      String   @id @default(uuid())
+  plantId String
+  plant   Plant    @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  type    String
+  sentAt  DateTime @default(now())
 
   @@index([plantId, type, sentAt])
   @@map("notification_logs")

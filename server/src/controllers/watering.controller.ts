@@ -1,6 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { WateringService } from '../services/watering.service.js';
+import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+
+import { WateringService } from "../services/watering.service.js";
 
 const waterPlantSchema = z.object({
   note: z.string().optional(),
@@ -18,7 +19,11 @@ export class WateringController {
     }
   }
 
-  static async getWateringHistory(req: Request, res: Response, next: NextFunction) {
+  static async getWateringHistory(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const id = req.params.id as string;
       const history = await WateringService.getWateringHistory(req.userId!, id);

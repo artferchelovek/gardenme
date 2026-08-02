@@ -1,16 +1,17 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { AuthService } from '../services/auth.service.js';
+import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+
+import { AuthService } from "../services/auth.service.js";
 
 const registerSchema = z.object({
-  email: z.string().email('Некорректный email адрес'),
-  password: z.string().min(6, 'Пароль должен быть не менее 6 символов'),
+  email: z.string().email("Некорректный email адрес"),
+  password: z.string().min(6, "Пароль должен быть не менее 6 символов"),
   name: z.string().optional(),
 });
 
 const loginSchema = z.object({
-  email: z.string().email('Некорректный email адрес'),
-  password: z.string().min(1, 'Пароль обязателен'),
+  email: z.string().email("Некорректный email адрес"),
+  password: z.string().min(1, "Пароль обязателен"),
 });
 
 export class AuthController {

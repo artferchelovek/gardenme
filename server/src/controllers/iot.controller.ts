@@ -1,6 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { ReadingService } from '../services/reading.service.js';
+import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+
+import { ReadingService } from "../services/reading.service.js";
 
 const readingSchema = z.object({
   moisture: z.number().min(0).max(100),

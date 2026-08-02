@@ -1,0 +1,103 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.comeback {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 65px;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  p {
+    color: var(--md-sys-color-on-background);
+  }
+
+  .name {
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
+.plants {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  opacity: 0;
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+}
+
+.skeletonHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 65px;
+}
+
+.skeletonTitle {
+  width: 220px;
+  height: 28px;
+  background: var(--md-sys-color-surface-container);
+  border-radius: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeletonSubtitle {
+  width: 280px;
+  height: 18px;
+  background: var(--md-sys-color-surface-container);
+  border-radius: 6px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeletonPlantsList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.skeletonPlantCard {
+  width: 100%;
+  height: 110px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-surface-container);
+  border-radius: 15px;
+  animation: pulse 1.5s infinite ease-in-out;
+}

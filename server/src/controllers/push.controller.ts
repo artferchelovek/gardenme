@@ -1,6 +1,7 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { PushService } from '../services/push.service.js';
+import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+
+import { PushService } from "../services/push.service.js";
 
 const subscribeSchema = z.object({
   subscription: z.object({
@@ -26,7 +27,7 @@ export class PushController {
     try {
       const { subscription } = subscribeSchema.parse(req.body);
       await PushService.subscribe(req.userId!, subscription);
-      res.status(201).json({ message: 'Подписка на уведомления сохранена' });
+      res.status(201).json({ message: "Подписка на уведомления сохранена" });
     } catch (err) {
       next(err);
     }
@@ -36,7 +37,7 @@ export class PushController {
     try {
       const { endpoint } = unsubscribeSchema.parse(req.body);
       await PushService.unsubscribe(endpoint);
-      res.json({ message: 'Подписка удалена' });
+      res.json({ message: "Подписка удалена" });
     } catch (err) {
       next(err);
     }

@@ -1,6 +1,6 @@
-import { prisma } from '../config/prisma.js';
-import { estimateDaysUntilWatering } from '../utils/calculation.utils.js';
-import type { EstimationResult } from '../utils/calculation.utils.js';
+import { prisma } from "../config/prisma.js";
+import { estimateDaysUntilWatering } from "../utils/calculation.utils.js";
+import type { EstimationResult } from "../utils/calculation.utils.js";
 
 export interface CreatePlantDto {
   name: string;
@@ -58,14 +58,14 @@ export class PlantService {
         },
         waterings: {
           take: 1,
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
         readings: {
           take: 50,
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     return plants.map((plant) => {
@@ -78,7 +78,7 @@ export class PlantService {
         estimation = estimateDaysUntilWatering(
           currentMoisture,
           plant.minMoistureThreshold,
-          plant.readings
+          plant.readings,
         );
       }
 
@@ -90,8 +90,10 @@ export class PlantService {
         minMoistureThreshold: plant.minMoistureThreshold,
         targetMoistureLevel: plant.targetMoistureLevel,
         currentMoisture,
-        batteryLevel: plant.device?.lastBatteryLevel ?? latestReading?.battery ?? null,
-        lastSeenAt: plant.device?.lastSeenAt ?? latestReading?.createdAt ?? null,
+        batteryLevel:
+          plant.device?.lastBatteryLevel ?? latestReading?.battery ?? null,
+        lastSeenAt:
+          plant.device?.lastSeenAt ?? latestReading?.createdAt ?? null,
         lastWateringAt: lastWatering?.createdAt || null,
         estimation,
         device: plant.device,
@@ -118,17 +120,17 @@ export class PlantService {
         },
         waterings: {
           take: 20,
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
         readings: {
           take: 200,
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
       },
     });
 
     if (!plant) {
-      throw new Error('Растение не найдено');
+      throw new Error("Растение не найдено");
     }
 
     const latestReading = plant.readings[0] || null;
@@ -140,7 +142,7 @@ export class PlantService {
       estimation = estimateDaysUntilWatering(
         currentMoisture,
         plant.minMoistureThreshold,
-        plant.readings
+        plant.readings,
       );
     }
 
@@ -152,7 +154,8 @@ export class PlantService {
       minMoistureThreshold: plant.minMoistureThreshold,
       targetMoistureLevel: plant.targetMoistureLevel,
       currentMoisture,
-      batteryLevel: plant.device?.lastBatteryLevel ?? latestReading?.battery ?? null,
+      batteryLevel:
+        plant.device?.lastBatteryLevel ?? latestReading?.battery ?? null,
       lastSeenAt: plant.device?.lastSeenAt ?? latestReading?.createdAt ?? null,
       lastWateringAt: lastWatering?.createdAt || null,
       estimation,
@@ -166,21 +169,28 @@ export class PlantService {
   /**
    * Update plant.
    */
-  static async updatePlant(userId: string, plantId: string, dto: UpdatePlantDto) {
+  static async updatePlant(
+    userId: string,
+    plantId: string,
+    dto: UpdatePlantDto,
+  ) {
     const existing = await prisma.plant.findFirst({
       where: { id: plantId, userId },
     });
 
     if (!existing) {
-      throw new Error('Растение не найдено');
+      throw new Error("Растение не найдено");
     }
 
     const dataToUpdate: Record<string, any> = {};
     if (dto.name !== undefined) dataToUpdate.name = dto.name;
     if (dto.species !== undefined) dataToUpdate.species = dto.species ?? null;
-    if (dto.location !== undefined) dataToUpdate.location = dto.location ?? null;
-    if (dto.minMoistureThreshold !== undefined) dataToUpdate.minMoistureThreshold = dto.minMoistureThreshold;
-    if (dto.targetMoistureLevel !== undefined) dataToUpdate.targetMoistureLevel = dto.targetMoistureLevel;
+    if (dto.location !== undefined)
+      dataToUpdate.location = dto.location ?? null;
+    if (dto.minMoistureThreshold !== undefined)
+      dataToUpdate.minMoistureThreshold = dto.minMoistureThreshold;
+    if (dto.targetMoistureLevel !== undefined)
+      dataToUpdate.targetMoistureLevel = dto.targetMoistureLevel;
     if (dto.deviceId !== undefined) dataToUpdate.deviceId = dto.deviceId;
 
     return prisma.plant.update({
@@ -199,7 +209,7 @@ export class PlantService {
     });
 
     if (!existing) {
-      throw new Error('Растение не найдено');
+      throw new Error("Растение не найдено");
     }
 
     return prisma.plant.delete({

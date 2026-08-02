@@ -1,7 +1,8 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { prisma } from '../config/prisma.js';
-import { env } from '../config/env.js';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+import { env } from "../config/env.js";
+import { prisma } from "../config/prisma.js";
 
 export interface RegisterDto {
   email: string;
@@ -21,7 +22,7 @@ export class AuthService {
     });
 
     if (existing) {
-      throw new Error('Пользователь с таким email уже существует');
+      throw new Error("Пользователь с таким email уже существует");
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 10);
@@ -40,7 +41,9 @@ export class AuthService {
       },
     });
 
-    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
 
     return { user, token };
   }
@@ -51,16 +54,18 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error('Неверный email или пароль');
+      throw new Error("Неверный email или пароль");
     }
 
     const isValid = await bcrypt.compare(dto.password, user.passwordHash);
 
     if (!isValid) {
-      throw new Error('Неверный email или пароль');
+      throw new Error("Неверный email или пароль");
     }
 
-    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign({ userId: user.id }, env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
 
     return {
       user: {
@@ -91,7 +96,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error('Пользователь не найден');
+      throw new Error("Пользователь не найден");
     }
 
     return user;

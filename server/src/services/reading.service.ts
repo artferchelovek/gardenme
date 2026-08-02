@@ -1,9 +1,9 @@
-import { prisma } from '../config/prisma.js';
-import { PushService } from './push.service.js';
+import { prisma } from "../config/prisma.js";
+import { PushService } from "./push.service.js";
 
 export interface IngestReadingDto {
   moisture: number; // 0 - 100%
-  battery: number;  // 0 - 100%
+  battery: number; // 0 - 100%
 }
 
 export class ReadingService {
@@ -17,7 +17,7 @@ export class ReadingService {
     });
 
     if (!device) {
-      throw new Error('Устройство с таким токеном не найдено');
+      throw new Error("Устройство с таким токеном не найдено");
     }
 
     const moisture = Math.max(0, Math.min(100, dto.moisture));
@@ -39,7 +39,7 @@ export class ReadingService {
     if (plantId) {
       lastReading = await prisma.moistureReading.findFirst({
         where: { plantId },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       });
     }
 
@@ -73,12 +73,18 @@ export class ReadingService {
     if (device.plant) {
       const plant = device.plant;
       if (moisture <= plant.minMoistureThreshold) {
-        await this.handleLowMoistureNotification(device.userId, plant.id, plant.name, moisture, plant.minMoistureThreshold);
+        await this.handleLowMoistureNotification(
+          device.userId,
+          plant.id,
+          plant.name,
+          moisture,
+          plant.minMoistureThreshold,
+        );
       }
     }
 
     return {
-      status: 'ok',
+      status: "ok",
       readingId: reading.id,
       plantPaired: !!plantId,
       plantName: device.plant?.name || null,
@@ -95,14 +101,14 @@ export class ReadingService {
     plantId: string,
     plantName: string,
     currentMoisture: number,
-    minThreshold: number
+    minThreshold: number,
   ) {
     const TwelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000);
 
     const recentNotification = await prisma.notificationLog.findFirst({
       where: {
         plantId,
-        type: 'LOW_MOISTURE',
+        type: "LOW_MOISTURE",
         sentAt: { gte: TwelveHoursAgo },
       },
     });
@@ -119,7 +125,7 @@ export class ReadingService {
       await prisma.notificationLog.create({
         data: {
           plantId,
-          type: 'LOW_MOISTURE',
+          type: "LOW_MOISTURE",
         },
       });
     }
