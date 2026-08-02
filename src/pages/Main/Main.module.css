@@ -1,0 +1,14 @@
+.comeback {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  p {
+    color: var(--md-sys-color-on-background);
+  }
+
+  .name {
+    font-size: 24px;
+    font-weight: 600;
+  }
+}

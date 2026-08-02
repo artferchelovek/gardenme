@@ -5,6 +5,7 @@
 ---
 
 ## 🛠 Технологический стек
+
 - **Runtime**: Node.js + TypeScript (ESM)
 - **Framework**: Express.js 5
 - **ORM**: Prisma v6
@@ -18,15 +19,19 @@
 ## 🚀 Быстрый запуск
 
 ### 1. Применение миграций Prisma в PostgreSQL
+
 Перед первым запуском примените схему БД:
+
 ```bash
 npx prisma db push
 ```
 
 ### 2. Запуск сервера разработки
+
 ```bash
 npm run dev
 ```
+
 Сервер будет доступен по адресу: `http://localhost:5000`
 
 ---
@@ -34,6 +39,7 @@ npm run dev
 ## 📡 API Эндпоинты
 
 Базовый путь — `/api`. Авторизация двух видов:
+
 - **Bearer** — `Authorization: Bearer <jwt>`, выдаётся при `register`/`login`, живёт 30 дней, кладёт `userId` в `req`.
 - **Device token** — заголовок `X-Device-Token` (или `Authorization: Bearer <token>`, или `body.token`), привязан к конкретной ESP32-плате, не связан с юзером напрямую.
 
@@ -41,20 +47,20 @@ npm run dev
 
 ### 🔐 1. Авторизация (`/api/auth`)
 
-| Метод | Путь | Auth | Принимаем | Отдаём |
-|---|---|---|---|---|
-| POST | `/register` | — | `{ email, password (≥6 симв.), name? }` | `201 { user: {id,email,name,createdAt}, token }` |
-| POST | `/login` | — | `{ email, password }` | `200 { user, token }` |
-| GET | `/me` | Bearer | — | `{ id,email,name,createdAt, _count:{plants,devices} }` |
+| Метод | Путь        | Auth   | Принимаем                               | Отдаём                                                 |
+| ----- | ----------- | ------ | --------------------------------------- | ------------------------------------------------------ |
+| POST  | `/register` | —      | `{ email, password (≥6 симв.), name? }` | `201 { user: {id,email,name,createdAt}, token }`       |
+| POST  | `/login`    | —      | `{ email, password }`                   | `200 { user, token }`                                  |
+| GET   | `/me`       | Bearer | —                                       | `{ id,email,name,createdAt, _count:{plants,devices} }` |
 
 ### 📟 2. Устройства ESP32 (`/api/devices`, все — Bearer)
 
-| Метод | Путь | Принимаем | Отдаём |
-|---|---|---|---|
-| POST | `/` | `{ name, macAddress?, token? }` — если `token` не задан, генерится `esp32_<hex>` | `201`, созданный device |
-| GET | `/` | — | список device + `plant: {id,name,species}` |
-| POST | `/:id/pair` | `{ plantId: string \| null }` | device + `plant` (`null` = отвязка) |
-| DELETE | `/:id` | — | `{ message }` |
+| Метод  | Путь        | Принимаем                                                                        | Отдаём                                     |
+| ------ | ----------- | -------------------------------------------------------------------------------- | ------------------------------------------ |
+| POST   | `/`         | `{ name, macAddress?, token? }` — если `token` не задан, генерится `esp32_<hex>` | `201`, созданный device                    |
+| GET    | `/`         | —                                                                                | список device + `plant: {id,name,species}` |
+| POST   | `/:id/pair` | `{ plantId: string \| null }`                                                    | device + `plant` (`null` = отвязка)        |
+| DELETE | `/:id`      | —                                                                                | `{ message }`                              |
 
 ### 🤖 3. Telemetry API для ESP32 (`/api/iot`)
 
@@ -68,30 +74,30 @@ npm run dev
 
 ### 🌱 4. Растения (`/api/plants`, все — Bearer)
 
-| Метод | Путь | Принимаем | Отдаём |
-|---|---|---|---|
-| POST | `/` | `{ name, species?, location?, minMoistureThreshold?, targetMoistureLevel?, deviceId? }` | `201`, растение + `device` |
-| GET | `/` | — | массив: `{id,name,species,location,minMoistureThreshold,targetMoistureLevel,currentMoisture,batteryLevel,lastSeenAt,lastWateringAt,estimation,device,createdAt}` |
-| GET | `/:id` | — | то же + `readingsHistory[]` (до 200, по возрастанию), `wateringsHistory[]` (до 20) |
-| PUT | `/:id` | любые поля из create, частично, `deviceId` может быть `null` | обновлённое растение + `device` |
-| DELETE | `/:id` | — | `{ message }` |
+| Метод  | Путь   | Принимаем                                                                               | Отдаём                                                                                                                                                           |
+| ------ | ------ | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | `/`    | `{ name, species?, location?, minMoistureThreshold?, targetMoistureLevel?, deviceId? }` | `201`, растение + `device`                                                                                                                                       |
+| GET    | `/`    | —                                                                                       | массив: `{id,name,species,location,minMoistureThreshold,targetMoistureLevel,currentMoisture,batteryLevel,lastSeenAt,lastWateringAt,estimation,device,createdAt}` |
+| GET    | `/:id` | —                                                                                       | то же + `readingsHistory[]` (до 200, по возрастанию), `wateringsHistory[]` (до 20)                                                                               |
+| PUT    | `/:id` | любые поля из create, частично, `deviceId` может быть `null`                            | обновлённое растение + `device`                                                                                                                                  |
+| DELETE | `/:id` | —                                                                                       | `{ message }`                                                                                                                                                    |
 
 `estimation` (когда есть хоть одно измерение) — `{ currentMoisture, minThreshold, dailyDryingRate, daysRemaining, status: 'OPTIMAL'|'WARNING'|'NEEDS_WATER' }`, считается в `utils/calculation.utils.ts` (см. алгоритм ниже).
 
 ### 💧 5. Полив (`/api/plants/:id/water`, `/api/plants/:id/waterings`, Bearer)
 
-| Метод | Путь | Принимаем | Отдаём |
-|---|---|---|---|
-| POST | `/water` | `{ note? }` | `201`, `WateringLog` (moistureAfter = `targetMoistureLevel` растения) |
-| GET | `/waterings` | — | массив `WateringLog` (до 50, свежие сверху) |
+| Метод | Путь         | Принимаем   | Отдаём                                                                |
+| ----- | ------------ | ----------- | --------------------------------------------------------------------- |
+| POST  | `/water`     | `{ note? }` | `201`, `WateringLog` (moistureAfter = `targetMoistureLevel` растения) |
+| GET   | `/waterings` | —           | массив `WateringLog` (до 50, свежие сверху)                           |
 
 ### 🔔 6. PWA Push Уведомления (`/api/push`)
 
-| Метод | Путь | Auth | Принимаем | Отдаём |
-|---|---|---|---|---|
-| GET | `/public-key` | — | — | `{ publicKey }` |
-| POST | `/subscribe` | Bearer | `{ subscription: { endpoint, keys: { p256dh, auth } } }` | `201 { message }` |
-| POST | `/unsubscribe` | Bearer | `{ endpoint }` | `{ message }` |
+| Метод | Путь           | Auth   | Принимаем                                                | Отдаём            |
+| ----- | -------------- | ------ | -------------------------------------------------------- | ----------------- |
+| GET   | `/public-key`  | —      | —                                                        | `{ publicKey }`   |
+| POST  | `/subscribe`   | Bearer | `{ subscription: { endpoint, keys: { p256dh, auth } } }` | `201 { message }` |
+| POST  | `/unsubscribe` | Bearer | `{ endpoint }`                                           | `{ message }`     |
 
 ### ❤️ 7. Health
 
@@ -100,7 +106,9 @@ npm run dev
 ---
 
 ## ⚡️ Прогноз полива (Алгоритм)
+
 Бэкенд динамически рассчитывает скорость высыхания почвы (% в сутки) по историческим показаниям датчика с момента последнего полива:
+
 - Вычисляется дневной тренд: `dailyDryingRate = Δmoisture / Δdays`.
 - Оставшиеся дни: `daysRemaining = (currentMoisture - minMoistureThreshold) / dailyDryingRate`.
 - Если влажность ниже минимальной — возвращает `daysRemaining: 0` и статус `NEEDS_WATER`.
@@ -135,7 +143,7 @@ float readMoisturePercentage() {
 float readBatteryPercentage() {
   int raw = analogRead(BATTERY_PIN);
   // Example for 18650 Li-Ion battery (3.0V - 4.2V)
-  float voltage = (raw / 4095.0) * 3.3 * 2.0; 
+  float voltage = (raw / 4095.0) * 3.3 * 2.0;
   float pct = ((voltage - 3.0) / 1.2) * 100.0;
   return constrain(pct, 0.0, 100.0);
 }

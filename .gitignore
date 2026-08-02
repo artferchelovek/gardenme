@@ -10,9 +10,10 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-dev-dist
 *.local
-*.tsbuildinfo
+
+# Generated Prisma Client Types
+./src/types/prisma
 
 # Editor directories and files
 .vscode/*
@@ -26,8 +27,3 @@ dev-dist
 *.sw?
 
 .env
-.env.*
-!.env.example
-
-# scratch / design reference files, not part of the app
-temp/

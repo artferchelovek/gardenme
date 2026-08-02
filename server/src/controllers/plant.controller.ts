@@ -1,9 +1,10 @@
-import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { PlantService } from '../services/plant.service.js';
+import type { NextFunction, Request, Response } from "express";
+import { z } from "zod";
+
+import { PlantService } from "../services/plant.service.js";
 
 const createPlantSchema = z.object({
-  name: z.string().min(1, 'Название растения обязательно'),
+  name: z.string().min(1, "Название растения обязательно"),
   species: z.string().optional(),
   location: z.string().optional(),
   minMoistureThreshold: z.number().min(0).max(100).optional(),
@@ -40,7 +41,11 @@ export class PlantController {
     }
   }
 
-  static async getPlantDetails(req: Request, res: Response, next: NextFunction) {
+  static async getPlantDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const id = req.params.id as string;
       const plant = await PlantService.getPlantDetails(req.userId!, id);
@@ -65,7 +70,7 @@ export class PlantController {
     try {
       const id = req.params.id as string;
       await PlantService.deletePlant(req.userId!, id);
-      res.json({ message: 'Растение удалено' });
+      res.json({ message: "Растение удалено" });
     } catch (err) {
       next(err);
     }

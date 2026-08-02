@@ -1,5 +1,6 @@
-import crypto from 'crypto';
-import { prisma } from '../config/prisma.js';
+import crypto from "crypto";
+
+import { prisma } from "../config/prisma.js";
 
 export interface CreateDeviceDto {
   name: string;
@@ -12,9 +13,10 @@ export class DeviceService {
    * Register a new ESP32 device for user. Uses custom token or generates a unique token.
    */
   static async createDevice(userId: string, dto: CreateDeviceDto) {
-    const token = dto.token && dto.token.trim().length > 0 
-      ? dto.token.trim() 
-      : `esp32_${crypto.randomBytes(16).toString('hex')}`;
+    const token =
+      dto.token && dto.token.trim().length > 0
+        ? dto.token.trim()
+        : `esp32_${crypto.randomBytes(16).toString("hex")}`;
 
     const device = await prisma.device.create({
       data: {
@@ -43,7 +45,7 @@ export class DeviceService {
           },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
 
@@ -56,7 +58,7 @@ export class DeviceService {
     });
 
     if (!device) {
-      throw new Error('Устройство не найдено');
+      throw new Error("Устройство не найдено");
     }
 
     return prisma.device.delete({
@@ -67,13 +69,17 @@ export class DeviceService {
   /**
    * Pair or unpair device with a plant.
    */
-  static async pairWithPlant(userId: string, deviceId: string, plantId: string | null) {
+  static async pairWithPlant(
+    userId: string,
+    deviceId: string,
+    plantId: string | null,
+  ) {
     const device = await prisma.device.findFirst({
       where: { id: deviceId, userId },
     });
 
     if (!device) {
-      throw new Error('Устройство не найдено');
+      throw new Error("Устройство не найдено");
     }
 
     if (plantId) {
@@ -82,7 +88,7 @@ export class DeviceService {
       });
 
       if (!plant) {
-        throw new Error('Растение не найдено');
+        throw new Error("Растение не найдено");
       }
 
       // Clear any existing plant paired with this device

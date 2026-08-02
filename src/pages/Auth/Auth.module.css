@@ -1,0 +1,157 @@
+.authPage {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 25px;
+  align-items: center;
+
+  padding: 15px;
+  margin: 25px;
+
+  border-radius: 25px;
+}
+
+.authPageLogin {
+  background: var(--md-sys-color-surface-container-lowest);
+}
+
+.logo {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 16px;
+
+  background-color: var(--md-sys-color-primary);
+  border-radius: 10px;
+
+  span {
+    font-size: 36px;
+
+    color: var(--md-sys-color-primary-container);
+  }
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+
+  color: var(--md-sys-color-primary);
+}
+
+.welcome {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  text-align: center;
+
+  p {
+    color: var(--md-sys-color-outline);
+  }
+
+  .comeBack {
+    font-size: 24px;
+    font-weight: 600;
+
+    color: var(--md-sys-color-on-background);
+  }
+}
+
+.inputs {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  width: 100%;
+
+  padding: 15px;
+
+  border-radius: 15px;
+}
+
+.inputsRegister {
+  background: var(--md-sys-color-surface-container-lowest);
+}
+
+.errorMessage {
+  padding: 10px 14px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  color: var(--md-sys-color-error, #ba1a1a);
+
+  text-align: center;
+
+  background-color: var(--md-sys-color-error-container, #ffdad6);
+  border-radius: 8px;
+}
+
+.enter {
+  display: flex;
+
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  padding: 12px;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  color: var(--md-sys-color-on-primary);
+
+  cursor: pointer;
+
+  background: var(--md-sys-color-primary);
+  border: none;
+  border-radius: 10px;
+
+  transition: opacity 0.2s ease;
+}
+
+.enter:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.enter:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+.switchAuth {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.switchBtn {
+  padding: 0;
+
+  font-size: inherit;
+  font-weight: 600;
+
+  color: var(--md-sys-color-primary);
+
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  background: none;
+  border: none;
+}
+
+.switchBtn:hover {
+  opacity: 0.8;
+}

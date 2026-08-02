@@ -1,0 +1,48 @@
+.input {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  width: 100%;
+
+  p {
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 600;
+
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  div {
+    display: flex;
+
+    gap: 5px;
+    align-items: center;
+
+    padding: 12px;
+
+    background: var(--md-sys-color-surface-container);
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 10px;
+
+    span {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    input {
+      flex: 1;
+
+      padding: 5px;
+
+      font-size: 16px;
+
+      color: var(--md-sys-color-on-surface);
+
+      outline: none;
+
+      background: none;
+      border: none;
+    }
+  }
+}
