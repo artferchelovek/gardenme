@@ -13,6 +13,8 @@ export default function PlantView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [plant, setPlant] = useState<Plant | null>(null);
 
+  console.log(error, loading, plant); // чтобы тс не ругался
+
   const statusText = plant?.estimation?.status
     ? PLANT_STATUS[plant.estimation.status] || plant.estimation.status
     : "Нет данных";
