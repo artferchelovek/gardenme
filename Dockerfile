@@ -3,11 +3,14 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy all project files (including server/ directory for postinstall prisma generate)
+# Copy all project files
 COPY . .
 
-# Install dependencies and build production bundle
-RUN npm install
+# Install dependencies ignoring postinstall scripts to prevent internet timeout/downloads on low-power devices
+RUN npm install --ignore-scripts
+
+# Generate Prisma client using local server binary and build production bundle
+RUN cd server && ./node_modules/.bin/prisma generate && cd ..
 RUN npm run build
 
 # Stage 2: Serve compiled SPA with Nginx
