@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cd server && npx prisma generate && tsc -b && vite build",
-    "postinstall": "cd server && npx prisma generate",
+    "build": "cd server && npx prisma generate && cd .. && tsc -b && vite build",
+    "postinstall": "cd server && npx prisma generate && cd ..",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:css": "stylelint --fix \"src/**/*.css\"",
@@ -38,6 +38,7 @@
     "stylelint-order": "^8.1.1",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0",
-    "vite": "^8.2.0"
+    "vite": "^8.2.0",
+    "vite-plugin-pwa": "^1.3.0"
   }
 }
