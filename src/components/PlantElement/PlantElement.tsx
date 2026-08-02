@@ -1,5 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 import type { Plant } from "@/api/plantApi.ts";
 import CircularProgressBar from "@/components/CircularProgressBar/CircularProgressBar.tsx";
+import { PLANT_STATUS } from "@/types/plant.ts";
 import { getBatteryIndicate } from "@/utils/battery.ts";
 
 import styles from "./PlantElement.module.css";
@@ -7,12 +10,6 @@ import styles from "./PlantElement.module.css";
 interface PlantElementProps {
   plant: Plant;
 }
-
-const PLANT_STATUS: Record<string, string> = {
-  OPTIMAL: "heart_check",
-  WARNING: "emergency_home",
-  NEEDS_WATER: "water_drop",
-};
 
 function PlantInfo(props: { name: string; battery: number; status: string }) {
   return (
@@ -32,6 +29,8 @@ function PlantInfo(props: { name: string; battery: number; status: string }) {
 }
 
 export default function PlantElement({ plant }: PlantElementProps) {
+  const navigate = useNavigate();
+
   let batteryProcent = 0;
   if (plant.batteryLevel) {
     batteryProcent = Math.round(plant.batteryLevel);
@@ -42,7 +41,11 @@ export default function PlantElement({ plant }: PlantElementProps) {
     : "Нет данных";
 
   return (
-    <div className={styles.plant} key={plant.id}>
+    <div
+      className={styles.plant}
+      key={plant.id}
+      onClick={() => navigate(`/plants/${plant.id}`)}
+    >
       <div className={styles.top}>
         <PlantInfo
           name={plant.name}

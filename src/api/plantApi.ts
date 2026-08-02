@@ -45,7 +45,7 @@ export const plantApi = {
 
   getPlantDetails: async (id: string): Promise<Plant> => {
     try {
-      const response = await api.get<Plant>(`/plant/${id}`);
+      const response = await api.get<Plant>(`/plants/${id}`);
       return response.data;
     } catch (error) {
       handleApiError(error, "Не удалось получить информацию о растении.");
