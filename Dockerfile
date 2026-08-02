@@ -6,11 +6,11 @@ WORKDIR /app
 # Copy all project files
 COPY . .
 
-# Install dependencies ignoring postinstall scripts to prevent internet timeout/downloads on low-power devices
+# Install dependencies ignoring postinstall network requests
 RUN npm install --ignore-scripts
 
-# Generate Prisma client using local server binary and build production bundle
-RUN cd server && ./node_modules/.bin/prisma generate && cd ..
+# Generate Prisma client using locally installed prisma CLI
+RUN ./node_modules/.bin/prisma generate --schema=server/prisma/schema.prisma
 RUN npm run build
 
 # Stage 2: Serve compiled SPA with Nginx
