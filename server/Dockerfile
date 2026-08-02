@@ -12,10 +12,10 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Generate Prisma Client
-RUN npx prisma generate
+# Generate Prisma Client using local binary
+RUN ./node_modules/.bin/prisma generate
 
 EXPOSE 5000
 
 # Push DB schema on startup and start server
-CMD ["sh", "-c", "npx prisma db push && npm run dev"]
+CMD ["sh", "-c", "./node_modules/.bin/prisma db push && npm run dev"]
