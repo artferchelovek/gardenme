@@ -3,13 +3,17 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy all project files
-COPY . .
+# 1. Copy package files and prisma schema first for Docker layer caching
+COPY package*.json ./
+COPY server/prisma/schema.prisma ./server/prisma/
 
-# Install dependencies ignoring postinstall network requests
+# 2. Install dependencies (Cached unless package.json changes)
 RUN npm install --ignore-scripts
 
-# Generate Prisma client using locally installed prisma CLI
+# 3. Copy source code after dependencies installation
+COPY . .
+
+# 4. Generate Prisma client and build production bundle
 RUN ./node_modules/.bin/prisma generate --schema=server/prisma/schema.prisma
 RUN npm run build
 
