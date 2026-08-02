@@ -13,7 +13,9 @@ dist-ssr
 *.local
 
 # Generated Prisma Client Types
-./src/types/prisma
+src/types/prisma
+src/types/prisma/
+/src/types/prisma
 
 # Editor directories and files
 .vscode/*
