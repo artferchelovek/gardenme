@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import PlantView from "@/pages/PlantView/PlantView.tsx";
+
 import Layout from "./components/Layout/Layout.tsx";
 import "./index.css";
 import "./m3styles/light.css";
@@ -22,6 +24,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path={"/"} element={<Main />} />
             <Route path={"/device"} element={<Device />} />
             <Route path={"/profile"} element={<Profile />} />
+
+            <Route path={"/plants/:id"} element={<PlantView />} />
           </Route>
         </Route>
       </Routes>
