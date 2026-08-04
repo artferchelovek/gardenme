@@ -1,19 +1,47 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { type Plant, plantApi } from "@/api/plantApi.ts";
+import MoistureChart from "@/components/MoistureChart/MoistureChart.tsx";
 import { PLANT_STATUS } from "@/types/plant.ts";
+import { type ChartPoint, get24hMoisture } from "@/utils/chartPoints.ts";
 
 import styles from "./PlantView.module.css";
 
+function CurrentMoisture(props: { plant: Plant; statusText: string }) {
+  return (
+    <div className={styles.currentMoisture}>
+      <p className={styles.title}>ТЕКУЩАЯ ВЛАЖНОСТЬ ПОЧВЫ</p>
+
+      <div className={styles.moistureElement}>
+        <p className={styles.moisture}>
+          {props.plant.estimation?.currentMoisture ?? 0}
+        </p>
+        <p className={styles.procent}>%</p>
+      </div>
+
+      <div className={styles.status}>
+        <span className="material-symbols-outlined">{props.statusText}</span>
+        <p>Статус: {props.plant?.estimation?.status}</p>
+      </div>
+
+      <span className={`${styles.backgroundDrop} material-symbols-outlined`}>
+        water_drop
+      </span>
+    </div>
+  );
+}
+
 export default function PlantView() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [plant, setPlant] = useState<Plant | null>(null);
+  const [chartData, setChartData] = useState<ChartPoint[]>([]);
 
-  console.log(error, loading, plant); // чтобы тс не ругался
+  console.log(error, loading, plant, chartData); // чтобы тс не ругался
 
   const statusText = plant?.estimation?.status
     ? PLANT_STATUS[plant.estimation.status] || plant.estimation.status
@@ -28,6 +56,8 @@ export default function PlantView() {
         }
         const response = await plantApi.getPlantDetails(id);
         setPlant(response);
+        const chart = get24hMoisture(response.readingsHistory);
+        setChartData(chart);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -46,31 +76,12 @@ export default function PlantView() {
     <div className={styles.plant}>
       {plant && (
         <>
-          <div className={styles.onMain}>
+          <div className={styles.onMain} onClick={() => navigate("/")}>
             <span className="material-symbols-outlined">arrow_back</span>
             <p>На главную</p>
           </div>
-          <div className={styles.currentMoisture}>
-            <p className={styles.title}>ТЕКУЩАЯ ВЛАЖНОСТЬ ПОЧВЫ</p>
-
-            <div className={styles.moistureElement}>
-              <p className={styles.moisture}>
-                {plant.estimation?.currentMoisture ?? 0}
-              </p>
-              <p className={styles.procent}>%</p>
-            </div>
-
-            <div className={styles.status}>
-              <span className="material-symbols-outlined">{statusText}</span>
-              <p>Статус: {plant?.estimation?.status}</p>
-            </div>
-
-            <span
-              className={`${styles.backgroundDrop} material-symbols-outlined`}
-            >
-              water_drop
-            </span>
-          </div>
+          <CurrentMoisture plant={plant} statusText={statusText} />
+          <MoistureChart chart={chartData} />
         </>
       )}
     </div>
