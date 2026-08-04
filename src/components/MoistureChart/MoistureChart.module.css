@@ -11,6 +11,7 @@
 
 .header {
   display: flex;
+  align-items: center;
   gap: 5px;
 
   p {
@@ -21,7 +22,7 @@
 
   span {
     color: var(--md-sys-color-on-surface);
-    font-variation-settings: 'wgth' 600;
+    font-variation-settings: "wgth" 600;
   }
 }
 
@@ -93,7 +94,6 @@
   div {
     display: flex;
     flex-direction: column;
-
 
     p {
       font-family: "JetBrains Mono", monospace;

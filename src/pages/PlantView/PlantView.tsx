@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { type Plant, plantApi } from "@/api/plantApi.ts";
+import DeviceStatus from "@/components/DeviceStatus/DeviceStatus.tsx";
 import MoistureChart from "@/components/MoistureChart/MoistureChart.tsx";
 import { PLANT_STATUS } from "@/types/plant.ts";
 import { type ChartPoint, get24hMoisture } from "@/utils/chartPoints.ts";
@@ -82,6 +83,7 @@ export default function PlantView() {
           </div>
           <CurrentMoisture plant={plant} statusText={statusText} />
           <MoistureChart chart={chartData} />
+          <DeviceStatus plant={plant} />
         </>
       )}
     </div>

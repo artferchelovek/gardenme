@@ -1,24 +1,26 @@
 .layout {
   display: flex;
-
   flex-direction: column;
-
   min-height: 100vh;
 }
 
 .header {
-  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 90;
 
+  display: flex;
   align-items: center;
   justify-content: space-between;
 
   padding: 15px;
+  padding-top: calc(15px + env(safe-area-inset-top, 0px));
 
+  background: var(--md-sys-color-background, #fdfdf6);
   border-bottom: 1px solid var(--md-sys-color-outline-variant);
 
   .title {
     display: flex;
-
     gap: 5px;
     align-items: center;
 
@@ -49,7 +51,6 @@
   z-index: 100;
 
   display: flex;
-
   align-items: center;
   justify-content: space-between;
   gap: 5px;
@@ -64,12 +65,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
-  color: var(--md-sys-color-on-surface-variant);
   padding: 6px 18px;
-  border-radius: 25px;
+  color: var(--md-sys-color-on-surface-variant);
+  text-decoration: none;
   background: none;
+  border-radius: 25px;
+  -webkit-tap-highlight-color: transparent;
 
   p {
     font-size: 12px;
@@ -88,8 +89,8 @@
 }
 
 .isActive {
-  background: var(--md-sys-color-primary-container);
   color: var(--md-sys-color-on-primary-container);
+  background: var(--md-sys-color-primary-container);
 
   p {
     font-weight: 700;

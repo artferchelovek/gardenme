@@ -1,0 +1,71 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-surface-container);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.05);
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    p {
+      font-size: 18px;
+      color: var(--md-sys-color-on-surface);
+      font-weight: 600;
+    }
+
+    span {
+      color: var(--md-sys-color-on-surface);
+      font-variation-settings: "wgth" 600;
+    }
+  }
+}
+
+.batteryLevel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      font-family: "JetBrains Mono", monospace;
+    }
+  }
+
+  .track {
+    width: 100%;
+    height: 12px;
+    background: var(--md-sys-color-secondary-container);
+    border-radius: 9999px;
+    overflow: hidden;
+
+    .fill {
+      height: 100%;
+      background: var(--md-sys-color-primary);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+}
+
+.lastView {
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    font-family: "JetBrains Mono", monospace;
+  }
+}
+
+.titleOfMK {
+  display: flex;
+  gap: 5px;
+}
