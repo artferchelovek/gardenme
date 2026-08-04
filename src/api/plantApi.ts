@@ -31,6 +31,7 @@ export interface Plant extends PrismaPlant {
   device?: PlantDeviceInfo | null;
   readingsHistory?: MoistureReading[];
   wateringsHistory?: WateringLog[];
+  plant?: Plant;
 }
 
 export const plantApi = {

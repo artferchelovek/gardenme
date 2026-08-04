@@ -15,15 +15,22 @@ export default function Footer() {
   useLayoutEffect(() => {
     if (!footerRef.current) return;
 
-    const observer = new ResizeObserver(([entry]) => {
-      const height = entry.contentRect.height;
-      document.documentElement.style.setProperty(
-        "--footer-height",
-        `${height}px`,
-      );
-    });
+    const updateHeight = () => {
+      if (footerRef.current) {
+        // getBoundingClientRect().height высчитывает ПОЛНУЮ высоту элемента вместе с padding и safe-area!
+        const fullHeight = footerRef.current.getBoundingClientRect().height;
+        document.documentElement.style.setProperty(
+          "--footer-height",
+          `${fullHeight}px`,
+        );
+      }
+    };
 
+    updateHeight();
+
+    const observer = new ResizeObserver(updateHeight);
     observer.observe(footerRef.current);
+
     return () => observer.disconnect();
   }, []);
 
