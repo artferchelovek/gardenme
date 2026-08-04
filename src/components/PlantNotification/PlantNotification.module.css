@@ -1,0 +1,140 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-surface-container);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.05);
+
+  .header {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    p {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    span {
+      color: var(--md-sys-color-on-surface);
+      font-variation-settings: "wgth" 600;
+    }
+  }
+}
+
+.notificationInput {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .info {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: space-between;
+
+    p:last-child {
+      color: var(--md-sys-color-primary);
+    }
+  }
+
+  .notificationInput {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: var(--md-sys-color-secondary-container);
+    border-radius: 9999px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .notificationInput::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+    margin-top: -8px;
+    cursor: pointer;
+    background: var(--md-sys-color-primary, #6750a4);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition:
+      transform 0.15s ease,
+      background-color 0.15s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .notificationInput::-webkit-slider-thumb:active {
+    transform: scale(1.25);
+  }
+}
+
+.notificationToggleDiv {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 15px;
+  background: var(--md-sys-color-surface-container-low);
+  gap: 16px;
+
+  p {
+    color: var(--md-sys-color-on-surface);
+  }
+}
+
+.notificationToggle {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 32px;
+  -webkit-tap-highlight-color: transparent;
+
+  .input {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  .slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: var(--md-sys-color-on-surface-variant);
+    border-radius: 9999px;
+    transition:
+      background-color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .slider::before {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    content: "";
+    width: 22px;
+    height: 22px;
+    background-color: var(--md-sys-color-on-primary);
+    border-radius: 50%;
+    transition:
+      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.25s ease;
+  }
+
+  .input:checked + .slider {
+    background: var(--md-sys-color-primary);
+  }
+
+  .input:checked + .slider::before {
+    background-color: var(--md-sys-color-on-primary);
+    transform: translateX(75%);
+  }
+
+  .disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+}
