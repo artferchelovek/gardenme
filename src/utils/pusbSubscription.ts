@@ -51,3 +51,18 @@ export async function disablePushNotifications() {
     await subscription.unsubscribe();
   }
 }
+
+export async function isPushSubscribed(): Promise<boolean> {
+  if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+    return false;
+  }
+
+  if (Notification.permission !== "granted") {
+    return false;
+  }
+
+  const registration = await navigator.serviceWorker.ready;
+  const subscription = await registration.pushManager.getSubscription();
+
+  return subscription !== null;
+}

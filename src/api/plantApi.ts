@@ -52,4 +52,23 @@ export const plantApi = {
       handleApiError(error, "Не удалось получить информацию о растении.");
     }
   },
+
+  updatePlant: async (
+    id: string,
+    data: Partial<{
+      name: string;
+      species: string;
+      location: string;
+      minMoistureThreshold: number;
+      targetMoistureLevel: number;
+      deviceId: string | null;
+    }>,
+  ): Promise<Plant> => {
+    try {
+      const response = await api.put<Plant>(`/plants/${id}`, data);
+      return response.data;
+    } catch (error) {
+      handleApiError(error, "Не удалось обновить данные растения.");
+    }
+  },
 };

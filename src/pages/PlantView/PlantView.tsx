@@ -47,7 +47,7 @@ export default function PlantView() {
     [],
   );
 
-  console.log(error, loading, plant, chartData); // чтобы тс не ругался
+  console.log(error, loading); // чтобы тс не ругался
 
   const statusText = plant?.estimation?.status
     ? PLANT_STATUS[plant.estimation.status] || plant.estimation.status
@@ -92,7 +92,7 @@ export default function PlantView() {
           <MoistureChart chart={chartData} />
           <DeviceStatus plant={plant} />
           <MoistureChart chart={chartBatteryData} />
-          <PlantNotification />
+          <PlantNotification plant={plant} />
         </>
       )}
     </div>
