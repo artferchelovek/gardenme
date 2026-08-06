@@ -17,7 +17,6 @@ export default function Footer() {
 
     const updateHeight = () => {
       if (footerRef.current) {
-        // getBoundingClientRect().height высчитывает ПОЛНУЮ высоту элемента вместе с padding и safe-area!
         const fullHeight = footerRef.current.getBoundingClientRect().height;
         document.documentElement.style.setProperty(
           "--footer-height",

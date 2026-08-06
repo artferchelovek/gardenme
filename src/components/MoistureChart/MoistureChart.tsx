@@ -1,9 +1,12 @@
+import type { ChartBatteryPoint } from "@/utils/battery.ts";
 import type { ChartPoint } from "@/utils/chartPoints.ts";
 
 import styles from "./MoistureChart.module.css";
 
 interface MoistureChartProps {
-  chart: ChartPoint[];
+  chart: ChartPoint[] | ChartBatteryPoint[];
+  type?: "moisture" | "battery";
+  title?: string;
 }
 
 function smoothPoints(
@@ -95,7 +98,11 @@ function buildCatmullRomPath(pts: { x: number; y: number }[]): string {
   return d;
 }
 
-export default function MoistureChart({ chart }: MoistureChartProps) {
+export default function MoistureChart({
+  chart,
+  type,
+  title,
+}: MoistureChartProps) {
   if (chart.length === 0) {
     return (
       <div className={styles.empty}>
@@ -104,9 +111,16 @@ export default function MoistureChart({ chart }: MoistureChartProps) {
     );
   }
 
-  const moistures = chart.map((r) => r.moisture);
-  const realMax = Math.round(Math.max(...moistures));
-  const realMin = Math.round(Math.min(...moistures));
+  const isBattery =
+    type === "battery" ||
+    (type === undefined && chart.length > 0 && "battery" in chart[0]!);
+
+  const getValue = (item: ChartPoint | ChartBatteryPoint) =>
+    "battery" in item ? item.battery : item.moisture;
+
+  const values = chart.map(getValue);
+  const realMax = Math.round(Math.max(...values));
+  const realMin = Math.round(Math.min(...values));
 
   const rangeMargin = Math.max(2, Math.round((realMax - realMin) * 0.25));
   const yMin = Math.max(0, realMin - rangeMargin);
@@ -120,9 +134,9 @@ export default function MoistureChart({ chart }: MoistureChartProps) {
   const PADDING_Y = 12;
 
   const rawPoints = chart.map((item, index) => {
+    const val = getValue(item);
     const x = (index / (chart.length - 1 || 1)) * SVG_WIDTH;
-    const normalizedY =
-      ((item.moisture - yMin) / yRange) * (SVG_HEIGHT - PADDING_Y * 2);
+    const normalizedY = ((val - yMin) / yRange) * (SVG_HEIGHT - PADDING_Y * 2);
     const y = SVG_HEIGHT - PADDING_Y - normalizedY;
 
     return { x, y };
@@ -145,11 +159,16 @@ export default function MoistureChart({ chart }: MoistureChartProps) {
     chart[chart.length - 1],
   ].filter(Boolean);
 
+  const chartTitle =
+    title ?? (isBattery ? "Уровень заряда за 24ч" : "Уровень влажности за 24ч");
+  const chartIcon = isBattery ? "battery_charging_full" : "show_chart";
+  const gradientId = isBattery ? "batteryGradient" : "moistureGradient";
+
   return (
     <div className={styles.card}>
       <div className={styles.header}>
-        <span className="material-symbols-outlined">show_chart</span>
-        <p>Уровень влажности за 24ч</p>
+        <span className="material-symbols-outlined">{chartIcon}</span>
+        <p>{chartTitle}</p>
       </div>
       <div className={styles.chartWrapper}>
         <div className={styles.yAxis}>
@@ -165,13 +184,7 @@ export default function MoistureChart({ chart }: MoistureChartProps) {
             className={styles.svg}
           >
             <defs>
-              <linearGradient
-                id="moistureGradient"
-                x1="0%"
-                y1="0%"
-                x2="0%"
-                y2="100%"
-              >
+              <linearGradient id={gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop
                   offset="0%"
                   stopColor="var(--md-sys-color-primary)"
@@ -207,7 +220,7 @@ export default function MoistureChart({ chart }: MoistureChartProps) {
               className={styles.gridLine}
             />
 
-            <path d={areaPath} fill="url(#moistureGradient)" />
+            <path d={areaPath} fill={`url(#${gradientId})`} />
 
             <path
               d={linePath}
