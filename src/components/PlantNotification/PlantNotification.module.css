@@ -89,6 +89,7 @@
 .notificationToggle {
   position: relative;
   display: inline-block;
+  flex-shrink: 0;
   width: 52px;
   height: 32px;
   -webkit-tap-highlight-color: transparent;
@@ -130,7 +131,7 @@
 
   .input:checked + .slider::before {
     background-color: var(--md-sys-color-on-primary);
-    transform: translateX(75%);
+    transform: translateX(20px);
   }
 
   .disabled {
