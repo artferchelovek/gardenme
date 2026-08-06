@@ -6,6 +6,7 @@ import DeviceStatus from "@/components/DeviceStatus/DeviceStatus.tsx";
 import MoistureChart from "@/components/MoistureChart/MoistureChart.tsx";
 import PlantNotification from "@/components/PlantNotification/PlantNotification.tsx";
 import { PLANT_STATUS } from "@/types/plant.ts";
+import { type ChartBatteryPoint, get24hBattery } from "@/utils/battery.ts";
 import { type ChartPoint, get24hMoisture } from "@/utils/chartPoints.ts";
 
 import styles from "./PlantView.module.css";
@@ -42,8 +43,11 @@ export default function PlantView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [plant, setPlant] = useState<Plant | null>(null);
   const [chartData, setChartData] = useState<ChartPoint[]>([]);
+  const [chartBatteryData, setChartBatteryData] = useState<ChartBatteryPoint[]>(
+    [],
+  );
 
-  console.log(error, loading, plant, chartData); // чтобы тс не ругался
+  console.log(error, loading); // чтобы тс не ругался
 
   const statusText = plant?.estimation?.status
     ? PLANT_STATUS[plant.estimation.status] || plant.estimation.status
@@ -59,7 +63,9 @@ export default function PlantView() {
         const response = await plantApi.getPlantDetails(id);
         setPlant(response);
         const chart = get24hMoisture(response.readingsHistory);
+        const chartBattery = get24hBattery(response.readingsHistory);
         setChartData(chart);
+        setChartBatteryData(chartBattery);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -85,7 +91,8 @@ export default function PlantView() {
           <CurrentMoisture plant={plant} statusText={statusText} />
           <MoistureChart chart={chartData} />
           <DeviceStatus plant={plant} />
-          <PlantNotification />
+          <MoistureChart chart={chartBatteryData} />
+          <PlantNotification plant={plant} />
         </>
       )}
     </div>
