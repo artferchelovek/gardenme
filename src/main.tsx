@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { registerSW } from "virtual:pwa-register";
 
 import PlantView from "@/pages/PlantView/PlantView.tsx";
+import WaterInfo from "@/pages/WaterInfo/WaterInfo.tsx";
 
 import Layout from "./components/Layout/Layout.tsx";
 import "./index.css";
@@ -30,6 +31,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path={"/profile"} element={<Profile />} />
 
             <Route path={"/plants/:id"} element={<PlantView />} />
+            <Route path={"/plants/:id/water"} element={<WaterInfo />} />
           </Route>
         </Route>
       </Routes>

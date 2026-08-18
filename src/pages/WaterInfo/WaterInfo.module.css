@@ -1,0 +1,80 @@
+.waterInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .backMain {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    color: var(--md-sys-color-on-background);
+
+    p {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    span {
+      font-size: 16px;
+      font-variation-settings: "wght" 500;
+    }
+  }
+
+  .title {
+    font-size: 24px;
+    color: var(--md-sys-color-primary);
+    font-weight: 600;
+  }
+}
+
+.lastWatered {
+  overflow: hidden;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  flex-direction: column;
+  border-radius: 15px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-surface-container);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  padding: 25px;
+
+  .last {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    p {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 16px;
+    }
+
+    p,
+    span {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    span {
+      font-size: 20px;
+    }
+  }
+
+  .ago {
+    font-weight: 600;
+    font-size: 24px;
+  }
+
+  .scheduleIcon {
+    position: absolute;
+    bottom: -45px;
+    right: -45px;
+
+    font-size: 128px;
+
+    font-variation-settings: "wght" 600;
+    color: var(--md-sys-color-surface-container-high);
+  }
+}
