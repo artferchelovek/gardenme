@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { type Plant, plantApi } from "@/api/plantApi.ts";
 import DeviceStatus from "@/components/DeviceStatus/DeviceStatus.tsx";
+import LastWateredElement from "@/components/LastWateredElement/LastWateredElement.tsx";
 import MoistureChart from "@/components/MoistureChart/MoistureChart.tsx";
 import PlantNotification from "@/components/PlantNotification/PlantNotification.tsx";
 import { PLANT_STATUS } from "@/types/plant.ts";
@@ -89,6 +90,7 @@ export default function PlantView() {
             <p>На главную</p>
           </div>
           <CurrentMoisture plant={plant} statusText={statusText} />
+          <LastWateredElement />
           <MoistureChart chart={chartData} />
           <DeviceStatus plant={plant} />
           <MoistureChart chart={chartBatteryData} />

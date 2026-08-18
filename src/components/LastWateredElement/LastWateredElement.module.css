@@ -1,0 +1,88 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-surface-container);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.05);
+
+  .header {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+
+    p {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    span {
+      color: var(--md-sys-color-on-surface);
+      font-variation-settings: "wgth" 600;
+    }
+  }
+
+  .details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 15px;
+    border: none;
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    text-decoration: none;
+    cursor: pointer;
+  }
+}
+
+.detectWater {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  border-radius: 15px;
+  background: var(--md-sys-color-surface-container-lowest);
+  border: 1px solid var(--md-sys-color-surface-container);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  padding: 25px;
+
+  .icon {
+    font-size: 28px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    p {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    p:last-child {
+      font-size: 14px;
+      font-weight: 400;
+      font-family: "JetBrains Mono", monospace;
+    }
+  }
+
+  p:last-child {
+    font-weight: 600;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    color: var(--md-sys-color-secondary);
+  }
+}
